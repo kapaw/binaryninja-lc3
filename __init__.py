@@ -206,7 +206,6 @@ class LC3(Architecture):
 
         return result
 
-
     def perform_get_instruction_text(self, data, addr):
         instruction, length, operands = self.decode_instruction(data, addr)
         if instruction is None:
