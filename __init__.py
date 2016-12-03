@@ -213,11 +213,11 @@ class LC3(Architecture):
         tokens = []
         tokens.append(InstructionTextToken(InstructionToken, '%-8s' %
             instruction))
+
         first_iteration = True
         for operand_type, operand in operands:
             if not first_iteration:
                 tokens.append(InstructionTextToken(OperandSeparatorToken, ', '))
-
             if operand_type in [TYPE_DR, TYPE_SR, TYPE_BR]:
                 tokens.append(InstructionTextToken(RegisterToken, 'R%d' %
                     operand))
@@ -228,10 +228,9 @@ class LC3(Architecture):
             elif operand_type == TYPE_PC_OFFSET:
                 addr = addr + length + (2 * operand)
                 tokens.append(InstructionTextToken(PossibleAddressToken,
-                    hex(addr).rstrip('L'), addr))
+                    '%#x' % addr, addr))
             else:
                 print 'Unknown operand type: %d' % operand_type
-
             first_iteration = False
 
         return tokens, length
