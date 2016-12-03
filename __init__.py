@@ -186,15 +186,15 @@ class LC3(Architecture):
         return instruction, 2, operands 
 
     def perform_get_instruction_info(self, data, addr):
-        instruction, length, operands, = self.decode_instruction(data, addr)
+        instruction, length, operands = self.decode_instruction(data, addr)
         if instruction is None:
             return None
 
         result = InstructionInfo()
         result.length = length
         if instruction.startswith('BR'):
-            result.add_branch(TrueBranch, addr + 2 + (2 * operands[0][1]))
-            result.add_branch(FalseBranch, addr + 2)
+            result.add_branch(TrueBranch, addr + length + (2 * operands[0][1]))
+            result.add_branch(FalseBranch, addr + length)
         elif instruction.startswith('JMP'):
             result.add_branch(UnconditionalBranch, operands[0][1])
         elif instruction == 'JSR':
