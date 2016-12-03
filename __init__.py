@@ -3,7 +3,6 @@ from binaryninja import *
 from struct import unpack
 
 # Operand types
-OperandTypes = ['DR','SR','BR','IMM','OFFSET','TRAPVECT']
 TYPE_DR = 0
 TYPE_SR = 1
 TYPE_BR = 2
