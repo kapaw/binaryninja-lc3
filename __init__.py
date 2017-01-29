@@ -158,9 +158,9 @@ class LC3(Architecture):
     }
     flags = ['n', 'z', 'p']
     flag_roles = {
-        'n': NegativeSignFlagRole,
-        'z': ZeroFlagRole,
-        'p': PositiveSignFlagRole,
+        'n': FlagRole.NegativeSignFlagRole,
+        'z': FlagRole.ZeroFlagRole,
+        'p': FlagRole.PositiveSignFlagRole,
     }
     stack_pointer = 'R7'
     
