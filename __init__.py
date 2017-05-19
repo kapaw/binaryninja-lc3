@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from binaryninja import *
+from binaryninja.enums import *
 from struct import unpack
 
 # Operand types
@@ -158,9 +159,9 @@ class LC3(Architecture):
     }
     flags = ['n', 'z', 'p']
     flag_roles = {
-        'n': NegativeSignFlagRole,
-        'z': ZeroFlagRole,
-        'p': PositiveSignFlagRole,
+        'n': FlagRole.NegativeSignFlagRole,
+        'z': FlagRole.ZeroFlagRole,
+        'p': FlagRole.PositiveSignFlagRole,
     }
     stack_pointer = 'R7'
     
@@ -192,16 +193,19 @@ class LC3(Architecture):
         result = InstructionInfo()
         result.length = length
         if instruction.startswith('BR'):
-            result.add_branch(TrueBranch, addr + length + (2 * operands[0][1]))
-            result.add_branch(FalseBranch, addr + length)
+            result.add_branch(BranchType.TrueBranch, addr + length + (2 *
+                operands[0][1]))
+            result.add_branch(BranchType.FalseBranch, addr + length)
         elif instruction.startswith('JMP'):
-            result.add_branch(UnconditionalBranch, operands[0][1])
+            result.add_branch(BranchType.UnconditionalBranch,
+                    operands[0][1])
         elif instruction == 'JSR':
-            result.add_branch(UnconditionalBranch, addr + operands[0][1])
+            result.add_branch(BranchType.UnconditionalBranch, addr +
+                    operands[0][1])
         elif instruction in ['JSRR', 'TRAP']:
-            result.add_branch(CallDestination, operands[0][1])
+            result.add_branch(BranchType.CallDestination, operands[0][1])
         elif instruction in ['RET', 'RTI']:
-            result.add_branch(FunctionReturn)
+            result.add_branch(BranchType.FunctionReturn)
 
         return result
 
@@ -209,6 +213,13 @@ class LC3(Architecture):
         instruction, length, operands = self.decode_instruction(data, addr)
         if instruction is None:
             return None
+
+        InstructionToken = InstructionTextTokenType.InstructionToken
+        RegisterToken = InstructionTextTokenType.RegisterToken
+        OperandSeparatorToken = InstructionTextTokenType.OperandSeparatorToken
+        PossibleAddressToken = InstructionTextTokenType.PossibleAddressToken
+        TextToken = InstructionTextTokenType.TextToken
+        IntegerToken = InstructionTextTokenType.IntegerToken
 
         tokens = []
         tokens.append(InstructionTextToken(InstructionToken, '%-8s' %
