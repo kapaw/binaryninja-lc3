@@ -195,7 +195,8 @@ class LC3(Architecture):
         if instruction.startswith('BR'):
             result.add_branch(BranchType.TrueBranch, addr + length + (2 *
                 operands[0][1]))
-            result.add_branch(BranchType.FalseBranch, addr + length)
+            if instruction != 'BRnzp':
+                result.add_branch(BranchType.FalseBranch, addr + length)
         elif instruction.startswith('JMP'):
             result.add_branch(BranchType.UnconditionalBranch,
                     operands[0][1])
