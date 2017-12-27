@@ -1,7 +1,7 @@
-# LC3 Architecture Plugin (v0.1)
+# LC-3 Architecture Plugin (v0.1)
 Author: **Paw Petersen**
 
-_Disassembler for the LC3 architecture._
+_Disassembler for the LC-3 architecture._
 
 ## Description:
 
